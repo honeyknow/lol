@@ -1,0 +1,41 @@
+﻿# ===== IGNORE EVERYTHING BY DEFAULT =====
+*
+
+# ===== THEN ALLOW ONLY NEEDED FILES =====
+
+# Git and config
+!.gitignore
+!.devcontainer/
+!.devcontainer/**
+
+# Root scripts
+!setup.sh
+!start.sh
+!README.md
+
+# Server backend (source only)
+!server/
+!server/backend/
+!server/backend/main.py
+!server/backend/requirements.txt
+!server/backend/.env.example
+
+# Server pipeline (source + schemas)
+!server/pipeline/
+!server/pipeline/ingestor.py
+!server/pipeline/detector.py
+!server/pipeline/multi_tenant_manager.py
+!server/pipeline/sync_agents.py
+!server/pipeline/rules_db.py
+!server/pipeline/threat_intel_worker.py
+!server/pipeline/schema.sql
+!server/pipeline/master_schema.sql
+!server/pipeline/amsi_patterns.json
+!server/pipeline/requirements.txt
+!server/pipeline/rules.db
+
+# Wazuh
+!server/wazuh/
+!server/wazuh/docker-compose.yml
+!server/wazuh/config/
+!server/wazuh/config/**

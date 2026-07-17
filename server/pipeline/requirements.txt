@@ -1,0 +1,13 @@
+# EDR Project -- Phase 2 Python dependencies
+# Install with: pip install -r requirements.txt
+
+# Core detector dependencies
+pysigma>=1.4.0
+pysigma-backend-sqlite>=1.1.3
+
+# --- Optional: used by future Phase 3 FastAPI backend ---
+# fastapi>=0.111
+# uvicorn[standard]>=0.29
+
+# --- Dev/Test tools ---
+pytest>=8.2

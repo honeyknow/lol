@@ -1,0 +1,30 @@
+{
+  "name": "ISHA-X EDR",
+  "image": "mcr.microsoft.com/devcontainers/python:3.11",
+  "forwardPorts": [8000],
+  "portsAttributes": {
+    "8000": {
+      "label": "ISHA-X Dashboard",
+      "onAutoForward": "openBrowser",
+      "protocol": "http"
+    }
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "moby": false
+    }
+  },
+  "postCreateCommand": "bash setup.sh 2>&1 | tee logs/setup.log",
+  "postStartCommand": "bash start.sh 2>&1 | tee -a logs/start.log",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python"
+      }
+    }
+  }
+}

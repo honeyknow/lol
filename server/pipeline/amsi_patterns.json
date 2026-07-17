@@ -1,0 +1,136 @@
+{
+  "_comment": "AMSI Layer A detection patterns + caller filters for ISHAX v2. Hot-loaded at runtime by detector.py with mtime-based reload — no restart needed on update. Fallback to hardcoded defaults if this file is missing or corrupt.",
+  "_version": "2",
+
+  "caller_filters": {
+    "_comment": "Process image names (basename only, case-insensitive endswith match) that qualify as AMSI callers for each technique. Add new Office/script host processes here without touching Python code.",
+
+    "office_images": [
+      "winword.exe", "excel.exe", "powerpnt.exe",
+      "outlook.exe", "onenote.exe", "access.exe",
+      "msaccess.exe", "mspub.exe", "visio.exe",
+      "winproj.exe", "msohtmed.exe", "groove.exe",
+      "infopath.exe", "msforms.exe", "officeclicktorun.exe"
+    ],
+
+    "office_extensions": [
+      ".docm", ".xlsm", ".xlam", ".dotm", ".pptm",
+      ".xls", ".doc", ".xlsb", ".pptx", ".docx",
+      "vba", "vbe7"
+    ],
+
+    "wsh_images": [
+      "wscript.exe", "cscript.exe", "mshta.exe",
+      "jscript.exe", "vbscript.exe", "chakra.dll",
+      "node.exe", "deno.exe"
+    ],
+
+    "script_extensions": [
+      ".js", ".vbs", ".jse", ".vbe", ".wsf", ".wsh",
+      ".hta", ".ps1", ".psd1", ".psm1", ".ts"
+    ],
+
+    "powershell_images": [
+      "powershell.exe", "pwsh.exe", "powershell_ise.exe"
+    ]
+  },
+
+  "staging_path_markers": {
+    "_comment": "Lowercase path fragments indicating suspicious binary staging locations. Used by enrich_service_confidence(). Add new known staging paths here.",
+    "markers": [
+      "\\temp\\", "\\appdata\\", "\\downloads\\",
+      "\\users\\public\\", "\\tmp\\", "\\programdata\\",
+      "\\recycle.bin\\", "\\windows\\temp\\",
+      "/tmp/", "/var/tmp/", "/dev/shm/"
+    ]
+  },
+
+  "T1059.001": {
+    "description": "PowerShell malicious content — Mimikatz, post-ex frameworks, download cradles, AMSI bypass, shellcode loaders",
+    "sources": [
+      "SigmaHQ: rules/windows/powershell/powershell_script/posh_ps_malicious_commandlets.yml",
+      "SigmaHQ: rules/windows/powershell/powershell_script/posh_ps_download_cradle.yml",
+      "SigmaHQ: rules/windows/powershell/powershell_script/posh_ps_amsi_bypass.yml"
+    ],
+    "patterns": [
+      "Invoke-Mimikatz", "Invoke-Mimikittenz", "Invoke-NanoDump",
+      "Invoke-SafetyKatz", "Invoke-BetterSafetyKatz", "Invoke-DinvokeKatz",
+      "sekurlsa", "logonpasswords", "lsadump", "dcsync", "hashdump",
+      "Invoke-Shellcode", "Invoke-ReflectivePEInjection", "Invoke-PSInject",
+      "Invoke-DllInjection", "VirtualAlloc", "CreateThread",
+      "Get-GPPPassword", "Get-PassHashes", "Get-LSASecret",
+      "Get-RemoteCachedCredential", "Get-VaultCredential",
+      "Invoke-PowerDump", "Invoke-PowerDPAPI", "Invoke-DCSync",
+      "Add-Persistence", "Get-Keystrokes", "Get-TimedScreenshot",
+      "Net.WebClient", "DownloadString", "DownloadFile",
+      "Invoke-WebRequest", "Start-BitsTransfer", "WebRequest",
+      "IEX(", "IEX (", "Invoke-Expression",
+      "amsiInitFailed", "AmsiScanBuffer", "amsiContext",
+      "amsi.dll", "AmsiScanString", "AmsiOpenSession",
+      "Invoke-Obfuscation", "Out-EncryptedScript",
+      "PowerSploit", "PowerView", "PowerUp",
+      "Empire", "Covenant", "Cobalt Strike",
+      "meterpreter", "shellcode", "shellcode_x64",
+      "Reflection.Assembly", "Assembly.Load",
+      "System.Runtime.InteropServices", "Marshal.Copy",
+      "kernel32", "ntdll", "VirtualProtect",
+      "New-Object Net", "New-Object System.Net",
+      "Hidden", "WindowStyle", "NonInteractive",
+      "EncodedCommand", "ExecutionPolicy Bypass",
+      "bypass", "-nop", "-noni", "-w hidden",
+      "Set-MpPreference", "DisableRealtimeMonitoring",
+      "Add-MpPreference", "ExclusionPath"
+    ]
+  },
+
+  "T1059.005": {
+    "description": "VBA / Office macro malicious content — shell execution, download, shellcode from macro",
+    "sources": [
+      "Custom — no equivalent SigmaHQ AMSI-content rule for VBA buffer (2026-07)",
+      "https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/office-macro-amsi"
+    ],
+    "patterns": [
+      "CreateObject", "Shell", "WScript.Shell", "PowerShell",
+      "cmd.exe", "certutil", "bitsadmin", "mshta",
+      "AutoOpen", "Document_Open", "Workbook_Open", "Auto_Open",
+      "AutoExec", "AutoClose", "Document_Close", "Workbook_Close",
+      "Environ(", "Chr(", "ChrW(", "CallByName",
+      "VirtualAlloc", "RtlMoveMemory", "CreateThread",
+      "URLDownloadToFile", "XMLHTTP", "WinHttpRequest",
+      "Shell32", "Execute", "MacroSecurity",
+      "ADODB.Stream", "Scripting.FileSystemObject",
+      "WScript.CreateObject", "GetObject",
+      "reg.exe", "regsvr32", "rundll32",
+      "wmic", "msiexec", "cmstp",
+      "Net.WebClient", "DownloadFile", "DownloadString",
+      "IEX", "Invoke-Expression",
+      "taskkill", "schtasks", "at.exe",
+      "vbscript", "jscript"
+    ]
+  },
+
+  "T1059.007": {
+    "description": "JavaScript / VBScript malicious content — ActiveX, COM, download, obfuscation patterns",
+    "sources": [
+      "Custom — no equivalent SigmaHQ AMSI-content rule for JS/VBS buffer (2026-07)",
+      "https://learn.microsoft.com/en-us/windows/win32/amsi/how-amsi-helps"
+    ],
+    "patterns": [
+      "WScript.Shell", "Shell.Application", "ActiveXObject",
+      "CreateObject", "GetObject", "GetActiveObject",
+      "eval(", "unescape(", "String.fromCharCode", "escape(",
+      "VBScript.Encode", "JScript.Encode",
+      "URLDownloadToFile", "XMLHTTP", "WinHttp",
+      "PowerShell", "cmd.exe", "certutil", "mshta",
+      "RegExp(", "new Function(",
+      "Adodb.Stream", "Scripting.FileSystemObject",
+      "WScript.CreateObject", "WScript.Sleep",
+      "document.write", "window.location",
+      "fromCharCode", "charCodeAt",
+      "atob(", "btoa(",
+      "exec(", "spawn(", "execSync(",
+      "child_process", "require('child",
+      "process.env", "process.argv"
+    ]
+  }
+}

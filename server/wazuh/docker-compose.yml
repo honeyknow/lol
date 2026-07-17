@@ -1,0 +1,62 @@
+# ISHA-X EDR — Manager Only (Lightweight Codespace Setup)
+# =========================================================
+# Runs only wazuh.manager (no indexer/dashboard — saves ~4GB RAM).
+# Uses network_mode: host so agents can connect via Tailscale.
+#
+# Usage:
+#   docker compose up -d
+#   docker compose down
+#
+# Logs go to /tmp/wazuh_logs/ (bind-mounted from host)
+
+services:
+  wazuh.manager:
+    image: wazuh/wazuh-manager:4.8.0
+    hostname: wazuh.manager
+    restart: unless-stopped
+    # host network mode: binds directly to Codespace host network
+    # This allows Tailscale agents to reach ports 1514/1515/55000 directly
+    network_mode: "host"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 655360
+        hard: 655360
+    environment:
+      - INDEXER_URL=https://wazuh.indexer:9200
+      - INDEXER_USERNAME=admin
+      - INDEXER_PASSWORD=SecretPassword
+      - FILEBEAT_SSL_VERIFICATION_MODE=none
+      - API_USERNAME=wazuh-wui
+      - API_PASSWORD=MyS3cr37P450r.*-
+    volumes:
+      - wazuh_api_configuration:/var/ossec/api/configuration
+      - wazuh_etc:/var/ossec/etc
+      # Bind-mount logs to host so ingestor.py can read archives.json directly
+      - /tmp/wazuh_logs:/var/ossec/logs
+      - wazuh_queue:/var/ossec/queue
+      - wazuh_var_multigroups:/var/ossec/var/multigroups
+      - wazuh_integrations:/var/ossec/integrations
+      - wazuh_active_response:/var/ossec/active-response/bin
+      - wazuh_agentless:/var/ossec/agentless
+      - wazuh_wodles:/var/ossec/wodles
+      - filebeat_etc:/etc/filebeat
+      - filebeat_var:/var/lib/filebeat
+      - ./config/wazuh_indexer_ssl_certs/root-ca-manager.pem:/etc/ssl/root-ca.pem
+      - ./config/wazuh_indexer_ssl_certs/wazuh.manager.pem:/etc/ssl/filebeat.pem
+      - ./config/wazuh_indexer_ssl_certs/wazuh.manager-key.pem:/etc/ssl/filebeat.key
+      - ./config/wazuh_cluster/wazuh_manager.conf:/wazuh-config-mount/etc/ossec.conf
+
+volumes:
+  wazuh_api_configuration:
+  wazuh_etc:
+  wazuh_queue:
+  wazuh_var_multigroups:
+  wazuh_integrations:
+  wazuh_active_response:
+  wazuh_agentless:
+  wazuh_wodles:
+  filebeat_etc:
+  filebeat_var:
