@@ -1,6 +1,6 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """
-ISHA-X EDR — sync_agents.py
+ISHA-X EDR â€” sync_agents.py
 ============================
 Called by start.sh after Wazuh Manager starts.
 
@@ -121,7 +121,7 @@ def register_agent(con: sqlite3.Connection, agent_id: str, agent_name: str, tena
 # ---------------------------------------------------------------------------
 def main():
     if not MASTER_DB_PATH.exists():
-        print(f"[sync_agents] master.db not found at {MASTER_DB_PATH} — skipping sync", flush=True)
+        print(f"[sync_agents] master.db not found at {MASTER_DB_PATH} â€” skipping sync", flush=True)
         return
 
     # Connect to master.db
@@ -134,7 +134,7 @@ def main():
     # Get admin tenant
     admin_tenant = get_admin_tenant_id(con)
     if not admin_tenant:
-        print("[sync_agents] No active tenant found in master.db — skipping sync", flush=True)
+        print("[sync_agents] No active tenant found in master.db â€” skipping sync", flush=True)
         print("[sync_agents] (User needs to log in at least once to create a tenant)", flush=True)
         con.close()
         return
@@ -152,7 +152,7 @@ def main():
         print(f"[sync_agents] Wazuh has {len(wazuh_agents)} agent(s)", flush=True)
     except Exception as e:
         print(f"[sync_agents] Wazuh API not reachable: {e}", flush=True)
-        print("[sync_agents] Skipping sync — Wazuh may still be starting", flush=True)
+        print("[sync_agents] Skipping sync â€” Wazuh may still be starting", flush=True)
         con.close()
         return
 
@@ -168,7 +168,7 @@ def main():
 
         if agent_id not in registered:
             register_agent(con, agent_id, agent_name, admin_tenant)
-            print(f"[sync_agents] ✅ Registered agent {agent_id} ({agent_name}) → tenant {admin_tenant}", flush=True)
+            print(f"[sync_agents] âœ… Registered agent {agent_id} ({agent_name}) â†’ tenant {admin_tenant}", flush=True)
             synced += 1
         else:
             print(f"[sync_agents] Agent {agent_id} ({agent_name}) already registered", flush=True)
@@ -176,10 +176,11 @@ def main():
     con.close()
 
     if synced == 0:
-        print("[sync_agents] All Wazuh agents are already registered in master.db ✓", flush=True)
+        print("[sync_agents] All Wazuh agents are already registered in master.db âœ“", flush=True)
     else:
         print(f"[sync_agents] Sync complete: {synced} new agent(s) registered", flush=True)
 
 
 if __name__ == "__main__":
     main()
+
