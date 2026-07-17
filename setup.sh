@@ -1,6 +1,6 @@
-#!/usr/bin/env bash
+﻿#!/usr/bin/env bash
 # =============================================================
-# ISHA-X EDR — setup.sh
+# ISHA-X EDR â€” setup.sh
 # Run ONCE after a fresh Codespace is created.
 # This installs ALL prerequisites and configures the environment.
 #
@@ -18,7 +18,7 @@ info()  { echo -e "${CYAN}[INFO]${NC}  $*"; echo "[INFO]  $*" >> "$LOG"; }
 ok()    { echo -e "${GREEN}[OK]${NC}    $*"; echo "[OK]    $*" >> "$LOG"; }
 warn()  { echo -e "${YELLOW}[WARN]${NC}  $*"; echo "[WARN]  $*" >> "$LOG"; }
 fail()  { echo -e "${RED}[FAIL]${NC}  $*"; echo "[FAIL]  $*" >> "$LOG"; exit 1; }
-step()  { echo -e "\n${CYAN}━━━ $* ━━━${NC}"; echo "--- $* ---" >> "$LOG"; }
+step()  { echo -e "\n${CYAN}â”â”â” $* â”â”â”${NC}"; echo "--- $* ---" >> "$LOG"; }
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LOG="$ROOT/logs/setup.log"
@@ -28,13 +28,13 @@ echo " ISHA-X setup.sh started at $(date)" >> "$LOG"
 echo "========================================" >> "$LOG"
 
 echo -e "${CYAN}"
-echo "  ██╗███████╗██╗  ██╗ █████╗       ██╗  ██╗"
-echo "  ██║██╔════╝██║  ██║██╔══██╗      ╚██╗██╔╝"
-echo "  ██║███████╗███████║███████║ █████╗ ╚███╔╝ "
-echo "  ██║╚════██║██╔══██║██╔══██║ ╚════╝ ██╔██╗ "
-echo "  ██║███████║██║  ██║██║  ██║       ██╔╝ ██╗"
-echo "  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝       ╚═╝  ╚═╝"
-echo "  EDR — Setup Script"
+echo "  â–ˆâ–ˆâ•—â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—â–ˆâ–ˆâ•—  â–ˆâ–ˆâ•— â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—       â–ˆâ–ˆâ•—  â–ˆâ–ˆâ•—"
+echo "  â–ˆâ–ˆâ•‘â–ˆâ–ˆâ•”â•â•â•â•â•â–ˆâ–ˆâ•‘  â–ˆâ–ˆâ•‘â–ˆâ–ˆâ•”â•â•â–ˆâ–ˆâ•—      â•šâ–ˆâ–ˆâ•—â–ˆâ–ˆâ•”â•"
+echo "  â–ˆâ–ˆâ•‘â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•‘â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•‘ â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•— â•šâ–ˆâ–ˆâ–ˆâ•”â• "
+echo "  â–ˆâ–ˆâ•‘â•šâ•â•â•â•â–ˆâ–ˆâ•‘â–ˆâ–ˆâ•”â•â•â–ˆâ–ˆâ•‘â–ˆâ–ˆâ•”â•â•â–ˆâ–ˆâ•‘ â•šâ•â•â•â•â• â–ˆâ–ˆâ•”â–ˆâ–ˆâ•— "
+echo "  â–ˆâ–ˆâ•‘â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•‘â–ˆâ–ˆâ•‘  â–ˆâ–ˆâ•‘â–ˆâ–ˆâ•‘  â–ˆâ–ˆâ•‘       â–ˆâ–ˆâ•”â• â–ˆâ–ˆâ•—"
+echo "  â•šâ•â•â•šâ•â•â•â•â•â•â•â•šâ•â•  â•šâ•â•â•šâ•â•  â•šâ•â•       â•šâ•â•  â•šâ•â•"
+echo "  EDR â€” Setup Script"
 echo -e "${NC}"
 
 # =============================================================
@@ -43,11 +43,11 @@ echo -e "${NC}"
 step "1/6 Installing system packages"
 
 export DEBIAN_FRONTEND=noninteractive
-sudo apt-get update -qq 2>>"$LOG" || fail "apt-get update failed — check logs/setup.log"
+sudo apt-get update -qq 2>>"$LOG" || fail "apt-get update failed â€” check logs/setup.log"
 
 PKGS=(
   curl wget git sqlite3 unzip
-  nsis                              # NSIS compiler — builds Windows .exe agent installers
+  nsis                              # NSIS compiler â€” builds Windows .exe agent installers
   jq                                # JSON parsing in bash
 )
 
@@ -58,7 +58,7 @@ for pkg in "${PKGS[@]}"; do
     info "Installing $pkg..."
     sudo apt-get install -y "$pkg" 2>>"$LOG" \
       && ok "$pkg installed" \
-      || warn "$pkg install failed (non-critical) — see logs/setup.log"
+      || warn "$pkg install failed (non-critical) â€” see logs/setup.log"
   fi
 done
 
@@ -73,7 +73,7 @@ else
   info "Downloading and installing Tailscale..."
   curl -fsSL https://tailscale.com/install.sh 2>>"$LOG" | sh >>"$LOG" 2>&1 \
     && ok "Tailscale installed" \
-    || fail "Tailscale install failed — check logs/setup.log"
+    || fail "Tailscale install failed â€” check logs/setup.log"
 fi
 
 # Start tailscaled daemon
@@ -101,10 +101,10 @@ if [ -n "$TAILSCALE_AUTH_KEY" ]; then
     && ok "Tailscale connected via auth key" \
     || warn "Tailscale auth key connect failed. Run: sudo tailscale up"
 else
-  warn "No TAILSCALE_AUTH_KEY in .env — opening browser for manual auth..."
+  warn "No TAILSCALE_AUTH_KEY in .env â€” opening browser for manual auth..."
   warn "Run in a new terminal: sudo tailscale up"
   warn "Then paste the URL in your browser and authenticate."
-  # Non-blocking — user handles manually
+  # Non-blocking â€” user handles manually
   sudo tailscale up 2>>"$LOG" &
   sleep 3
 fi
@@ -120,7 +120,7 @@ if [ -n "$TS_IP" ]; then
     fi
   fi
 else
-  warn "Tailscale not yet connected — manually run: sudo tailscale up"
+  warn "Tailscale not yet connected â€” manually run: sudo tailscale up"
   warn "Then update SERVER_HOST in server/backend/.env"
 fi
 
@@ -132,13 +132,34 @@ step "3/6 Installing Python dependencies"
 info "Installing backend dependencies..."
 pip install --quiet -r "$ROOT/server/backend/requirements.txt" >>"$LOG" 2>&1 \
   && ok "Backend deps installed" \
-  || fail "Backend pip install failed — check logs/setup.log"
+  || fail "Backend pip install failed â€” check logs/setup.log"
 
 info "Installing pipeline dependencies..."
 pip install --quiet -r "$ROOT/server/pipeline/requirements.txt" >>"$LOG" 2>&1 \
   && ok "Pipeline deps installed" \
-  || fail "Pipeline pip install failed — check logs/setup.log"
+  || fail "Pipeline pip install failed â€” check logs/setup.log"
 
+
+# =============================================================
+# STEP 3.5: Build Frontend
+# =============================================================
+step "3.5/6 Building React Frontend"
+
+if command -v npm &>/dev/null; then
+  info "Installing frontend dependencies..."
+  cd "$ROOT/server/frontend"
+  npm install >>"$LOG" 2>&1 \
+    && ok "Frontend deps installed" \
+    || fail "npm install failed — check logs/setup.log"
+    
+  info "Building frontend..."
+  npm run build >>"$LOG" 2>&1 \
+    && ok "Frontend built successfully" \
+    || fail "npm run build failed — check logs/setup.log"
+  cd "$ROOT"
+else
+  warn "npm not found — cannot build frontend!"
+fi
 # =============================================================
 # STEP 4: .env file check
 # =============================================================
@@ -148,8 +169,8 @@ EXAMPLE_ENV="$ROOT/server/backend/.env.example"
 if [ ! -f "$ENV_FILE" ]; then
   if [ -f "$EXAMPLE_ENV" ]; then
     cp "$EXAMPLE_ENV" "$ENV_FILE"
-    warn ".env not found — copied from .env.example"
-    warn "⚠️  IMPORTANT: Edit server/backend/.env and fill in your values!"
+    warn ".env not found â€” copied from .env.example"
+    warn "âš ï¸  IMPORTANT: Edit server/backend/.env and fill in your values!"
   else
     fail ".env and .env.example both missing! Cannot continue."
   fi
@@ -162,7 +183,7 @@ for KEY in GROQ_API_KEY ADMIN_EMAILS SESSION_SECRET WAZUH_API_USER WAZUH_API_PAS
   if grep -q "^${KEY}=" "$ENV_FILE" 2>/dev/null; then
     ok "$KEY is set"
   else
-    warn "$KEY is missing from .env — some features may not work"
+    warn "$KEY is missing from .env â€” some features may not work"
   fi
 done
 
@@ -190,7 +211,7 @@ if schema_file.exists():
     con.close()
     print(f"master.db initialised from {schema_file}")
 else:
-    print("master_schema.sql not found — master.db will be auto-created by app")
+    print("master_schema.sql not found â€” master.db will be auto-created by app")
 PYEOF
   ok "master.db ready"
 else
@@ -209,10 +230,10 @@ if command -v docker &>/dev/null; then
   if docker info &>/dev/null 2>&1; then
     ok "Docker daemon is running"
   else
-    warn "Docker daemon not running — start.sh will try to start it"
+    warn "Docker daemon not running â€” start.sh will try to start it"
   fi
 else
-  warn "Docker not found — Wazuh Manager won't start"
+  warn "Docker not found â€” Wazuh Manager won't start"
   warn "Rebuild the Codespace if Docker is missing"
 fi
 
@@ -223,9 +244,9 @@ chmod +x "$ROOT/start.sh" 2>/dev/null || true
 # Summary
 # =============================================================
 echo ""
-echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-echo -e "${GREEN}  ✅  ISHA-X Setup Complete!${NC}"
-echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo -e "${GREEN}â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”${NC}"
+echo -e "${GREEN}  âœ…  ISHA-X Setup Complete!${NC}"
+echo -e "${GREEN}â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”${NC}"
 echo ""
 echo "  Next steps:"
 if [ -z "$TS_IP" ]; then
@@ -239,3 +260,4 @@ echo ""
 echo "  Setup log: logs/setup.log"
 echo ""
 echo "[setup.sh] Completed at $(date)" >> "$LOG"
+
