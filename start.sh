@@ -94,7 +94,8 @@ fi
 step "3/5 Starting Wazuh Manager"
 
 WAZUH_DIR="$ROOT/server/wazuh"
-mkdir -p /tmp/wazuh_logs/archives /tmp/wazuh_logs/alerts
+mkdir -p /tmp/wazuh_logs/archives /tmp/wazuh_logs/alerts /tmp/wazuh_logs/api /tmp/wazuh_logs/ossec
+chmod -R 777 /tmp/wazuh_logs
 
 if ! command -v docker &>/dev/null; then
   warn "Docker not found — Wazuh will not start. Agent events will not be collected."
