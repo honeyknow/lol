@@ -125,6 +125,20 @@ else
 fi
 
 # =============================================================
+# STEP 2.5: Install Node.js
+# =============================================================
+step "2.5/6 Installing Node.js"
+
+if command -v npm &>/dev/null; then
+  ok "npm already installed"
+else
+  info "Installing Node.js 20.x..."
+  curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash - >>"$LOG" 2>&1
+  sudo apt-get install -y nodejs >>"$LOG" 2>&1 \
+    && ok "Node.js installed" \
+    || fail "Node.js install failed"
+fi
+# =============================================================
 # STEP 3: Python Dependencies
 # =============================================================
 step "3/6 Installing Python dependencies"
@@ -260,4 +274,5 @@ echo ""
 echo "  Setup log: logs/setup.log"
 echo ""
 echo "[setup.sh] Completed at $(date)" >> "$LOG"
+
 
