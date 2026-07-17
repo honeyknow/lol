@@ -1672,7 +1672,7 @@ try {{
         Write-Host "[+] Wazuh Agent is already installed. Skipping download..." -ForegroundColor Yellow
     }} else {{
         Write-Host "[*] Downloading Wazuh Agent MSI..." -ForegroundColor Cyan
-        Invoke-WebRequest -Uri "https://packages.wazuh.com/4.x/windows/wazuh-agent-4.14.6-1.msi" -OutFile "$env:tmp\wazuh-agent.msi" -UseBasicParsing
+        Invoke-WebRequest -Uri "https://packages.wazuh.com/4.x/windows/wazuh-agent-4.8.0-1.msi" -OutFile "$env:tmp\wazuh-agent.msi" -UseBasicParsing
         Write-Host "[*] Installing Wazuh Agent..." -ForegroundColor Cyan
         $process = Start-Process -FilePath "msiexec.exe" -ArgumentList "/i $env:tmp\wazuh-agent.msi /q WAZUH_MANAGER=`"{host_ip}`" WAZUH_REGISTRATION_SERVER=`"{host_ip}`"" -Wait -NoNewWindow -PassThru
         if ($process.ExitCode -ne 0) {{ throw "Wazuh MSI installation failed with exit code $($process.ExitCode)" }}
