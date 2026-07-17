@@ -1809,11 +1809,18 @@ def _build_ossec_conf(agent_id: str, agent_key: str, server_host: str) -> str:
 
 async def _get_wazuh_token() -> str:
     """Authenticate against Wazuh API and return JWT token."""
+    import base64
+    user = WAZUH_API_USER.strip()
+    password = WAZUH_API_PASS.strip()
+    creds = base64.b64encode(f"{user}:{password}".encode()).decode()
+    
     async with httpx.AsyncClient(verify=False, timeout=15) as client:
         r = await client.get(
-            f"{WAZUH_API_BASE}/security/user/authenticate",
-            auth=(WAZUH_API_USER, WAZUH_API_PASS),
+            f"{WAZUH_API_BASE.strip().rstrip('/')}/security/user/authenticate",
+            headers={"Authorization": f"Basic {creds}"}
         )
+        if r.status_code != 200:
+            print(f"[WAZUH AUTH ERROR] HTTP {r.status_code}: {r.text}", flush=True)
         r.raise_for_status()
         return r.json()["data"]["token"]
 
